@@ -1,0 +1,11 @@
+env/
+db.sqlite3/
+code.txt
+.env/
+.vscode/
+__pycache__/
+*.log
+*.pot
+*.pyc
+media
+staticfile
