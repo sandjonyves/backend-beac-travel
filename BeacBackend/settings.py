@@ -34,10 +34,12 @@ ALLOWED_HOSTS = [
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
-    "exp://192.168.43.84:8081",  # URL par défaut d'Expo pour le développement
+    # "*"
+    'https://beac-travel.vercel.app'
+    # "exp://192.168.43.84:8081",  # URL par défaut d'Expo pour le développement
     # "http://192.168.43.84", 
     # 'http://localhost:3000'
-    "https://backend-beac-travel.onrender.com",
+    # "https://backend-beac-travel.onrender.com",
     'http://localhost:5173'
 ]
 
