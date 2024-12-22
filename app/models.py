@@ -13,7 +13,7 @@ class Service(models.Model):
         return self.name
 
 class Agency(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='agencies')
+    service = models.ForeignKey(Service, on_delete=models.SET_NULL ,null=True, related_name='agencies')
     country = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
