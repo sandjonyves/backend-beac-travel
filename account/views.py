@@ -127,7 +127,22 @@ class UserRegister(viewsets.ModelViewSet):
             return Response(response_data, status=status.HTTP_201_CREATED)
 
         return Response({'message': _('Invalid data.')}, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['put'], 
+            url_path=r'update-grade/(?P<user_id>\d+)/(?P<grade>\w+)')
+    def update_grade(self, request, user_id, grade):
+        try:
+            user = CustomUser.objects.get(id=int(user_id))
+            user.grade = grade
+            user.save()
 
+            serializer = UserSerializer(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except CustomUser.DoesNotExist:
+            return Response({'message': _('User not found.')}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class AgentUser(PersonalModelViewSet):
     permission_classes = [AllowAny]
@@ -166,6 +181,8 @@ class AdminUser(PersonalModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = AdminSerializer
     queryset = Admin.objects.all()
+
+
 
  
   
