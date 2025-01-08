@@ -47,18 +47,17 @@ class MissionViewSet(viewsets.ModelViewSet):
     serializer_class = MissionSerializer
 
     @action(detail=False, methods=['get'], url_path='user-missions/(?P<user_id>\w+)')
-    def user_missions(self, request,user_id):
+    def user_missions(self, request, user_id):
         missions = self.queryset.filter(user__id=user_id)
         serializer = self.get_serializer(missions, many=True)
         return Response(serializer.data)
-    @action(detail=False, methods=['get'], url_path='user-request/(?P<service_id>\\w+)')
-        
-    def user_missions(self, request, service_id):
+
+    @action(detail=False, methods=['get'], url_path='user-request/(?P<service_id>\w+)')
+    def user_requests(self, request, service_id):
         missions = self.queryset.filter(
             status='submitted',
             user__agency__service__id=service_id
         )
-
         serializer = self.get_serializer(missions, many=True)
         return Response(serializer.data)
         
