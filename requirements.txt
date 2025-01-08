@@ -5,8 +5,6 @@ Automat==24.8.1
 Brotli==1.1.0
 certifi==2024.12.14
 cffi==1.17.1
-channels==4.1.0
-channels-redis==4.2.0
 charset-normalizer==3.4.0
 cloudinary==1.41.0
 constantly==23.10.4
@@ -14,7 +12,6 @@ coreapi==2.3.3
 coreschema==0.0.4
 cryptography==42.0.7
 cssselect2==0.7.0
-daphne==4.1.2
 defusedxml==0.8.0rc2
 dj-database-url==2.3.0
 Django==5.1.4
@@ -28,7 +25,6 @@ django-templated-mail==1.1.1
 django-wkhtmltopdf==3.4.0
 djangorestframework==3.15.2
 djangorestframework-simplejwt==5.3.1
-djoser==2.2.2
 drf-yasg==1.21.8
 environ==1.0
 fonttools==4.55.3

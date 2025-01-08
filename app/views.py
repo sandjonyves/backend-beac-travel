@@ -30,7 +30,16 @@ class AgencyViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         except Agency.DoesNotExist:
             return Response({"detail": "Agency not found."}, status=404)
-
+        
+    @action(detail=False, methods=['get'], url_path='service-agencies/(?P<service_id>[^/.]+)')
+    def agency_service(self, request, service_id):
+        # Retrieve the agency associated with the given admin_id
+        try:
+            agency = self.queryset.filter(service__id=service_id)
+            serializer = self.get_serializer(agency,many=True)
+            return Response(serializer.data)
+        except Agency.DoesNotExist:
+            return Response({"detail": "Agency not found."}, status=404)
 
 
 class MissionViewSet(viewsets.ModelViewSet):
@@ -42,7 +51,17 @@ class MissionViewSet(viewsets.ModelViewSet):
         missions = self.queryset.filter(user__id=user_id)
         serializer = self.get_serializer(missions, many=True)
         return Response(serializer.data)
-    
+    @action(detail=False, methods=['get'], url_path='user-request/(?P<service_id>\\w+)')
+        
+    def user_missions(self, request, service_id):
+        missions = self.queryset.filter(
+            status='submitted',
+            user__agency__service__id=service_id
+        )
+
+        serializer = self.get_serializer(missions, many=True)
+        return Response(serializer.data)
+        
     @action(detail=True, methods=['put'], url_path='status-change/(?P<mission_status>\w+)')
     def status_change(self, request, pk=None, mission_status=None):
         mission = self.get_object()  

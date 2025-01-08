@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Admin, Agent, Superuser, CustomUser
-from app.serializers import AgencySerializer
+from app.serializers import AgencySerializer,ServiceSerializer
 from app.models import Agency
 # Sérialiseur pour CustomUser
 class UserSerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'email', 'phone_number', 'password', 'role')
+        fields = ('id', 'firstName','lastName', 'email', 'phone_number', 'password', 'role')
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
@@ -28,7 +28,7 @@ class AgentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Agent
-        fields = ('id', 'username', 'admin_id', 'email', 'phone_number', 'password', 'role', 'agency','agency_detail')
+        fields = ('id',  'firstName','lastName', 'email', 'phone_number', 'grade', 'role', 'agency','agency_detail')
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
@@ -40,17 +40,19 @@ class AgentSerializer(serializers.ModelSerializer):
 
 # Sérialiseur pour Admin
 class AdminSerializer(serializers.ModelSerializer):
-    agency = serializers.PrimaryKeyRelatedField(queryset=Agency.objects.all(), required=False)
+    agency_detail =  AgencySerializer(source='agency', read_only=True) 
 
     class Meta:
         model = Admin
-        fields = '__all__'
+        fields = ('id',  'firstName','lastName', 'email', 'phone_number','grade', 'role', 'agency','agency_detail')
 
 # Sérialiseur pour Superuser
 class SuperUserSerializer(serializers.ModelSerializer):
+    service_detail = ServiceSerializer(source='service',read_only=True)
+
     class Meta:
         model = Superuser
-        fields = '__all__'
+        fields = ('id',  'firstName','lastName', 'email', 'phone_number','grade', 'role', 'service','service_detail')
 
 # Sérialiseur pour la connexion utilisateur
 class UserLoginSerializer(TokenObtainPairSerializer):

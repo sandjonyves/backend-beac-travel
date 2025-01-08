@@ -19,7 +19,7 @@ class MissionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AgencySerializer(serializers.ModelSerializer):
-    service = ServiceSerializer(read_only=True)
+    # service = ServiceSerializer(read_only=True)
     missions = MissionSerializer(many=True, read_only=True)
 
     class Meta:

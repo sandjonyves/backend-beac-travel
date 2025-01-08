@@ -27,10 +27,10 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=32, null=True)
     firstName = models.CharField(max_length=32,null=True)
-    latsName = models.CharField(max_length=32,null=True)
-    username = models.CharField(max_length=32,null=True)
-    admin_id = models.IntegerField(null=True)
+    lastName = models.CharField(max_length=32,null=True)
+    # username = models.CharField(max_length=32,null=True)
     email = models.EmailField(unique=True)
+    grade = models.CharField(max_length=128,null=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -65,7 +65,7 @@ class Admin(CustomUser):
         super().save(*args, **kwargs)
 
 class Superuser(CustomUser):
-    service = models.OneToOneField('app.service',on_delete=models.CASCADE,related_name='superuser',default=1,null=True)
+    service = models.OneToOneField('app.service',on_delete=models.CASCADE,related_name='superuser',null=True)
     def save(self, *args, **kwargs) -> None:
         if not self.pk:
             self.role = CustomUser.Role.SUPERUSER

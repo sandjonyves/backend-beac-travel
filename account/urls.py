@@ -6,8 +6,6 @@ route =routers.SimpleRouter()
 
 route.register('register',UserRegister,basename='user')
 
-
-
 route.register('agent',AgentUser,basename='Agent')
 route.register('admin',AdminUser,basename='admin')
 route.register('superuser',SuperUser,basename='superuser')

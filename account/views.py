@@ -72,8 +72,9 @@ def create_superuser(validated_data):
 
 class UserRegister(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
-    serializer_class = UserSerializer
     queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer
+    
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -112,9 +113,9 @@ class UserRegister(viewsets.ModelViewSet):
             user.save() 
             user_info = {
                 'id':user.id,
-                'username': user.username,
-                'email': user.email,
-                'phone_number': user.phone_number,
+                # 'username': user.username,
+                # 'email': user.email,
+                # 'phone_number': user.phone_number,
                 'role': user.role,
             }
 
@@ -146,8 +147,9 @@ class UserRegister(viewsets.ModelViewSet):
 
 class AgentUser(PersonalModelViewSet):
     permission_classes = [AllowAny]
-    serializer_class = AgentSerializer
     queryset = Agent.objects.all()
+    serializer_class = AgentSerializer
+    
 
     # @action(detail=False, methods=['get'], url_path='users-agency/(?P<user_id>\w+)')
     # def user_agency(self, request,user_id):
@@ -171,7 +173,7 @@ class AgentUser(PersonalModelViewSet):
         serializer = self.get_serializer(agents, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-  
+
 
 
 
@@ -179,8 +181,9 @@ class AgentUser(PersonalModelViewSet):
 
 class AdminUser(PersonalModelViewSet):
     permission_classes = [AllowAny]
-    serializer_class = AdminSerializer
     queryset = Admin.objects.all()
+    serializer_class = AdminSerializer
+    
 
 
 
@@ -189,8 +192,9 @@ class AdminUser(PersonalModelViewSet):
 
 class SuperUser(PersonalModelViewSet):
     permission_classes = [AllowAny]
-    serializer_class = SuperUserSerializer
     queryset = Superuser.objects.all()
+    serializer_class = SuperUserSerializer
+    
 
 
 
@@ -213,7 +217,7 @@ class UserLogin(APIView):
 
      
         token = RefreshToken.for_user(user)
-        token['role'] = user.role 
+        # token['role'] = user.role 
      
         # if hasattr(user, 'admin') or hasattr(user, 'agent'):
         #     user_info['agency'] = user.agency  
@@ -221,9 +225,9 @@ class UserLogin(APIView):
         #     user_info['service'] = user.service 
         user_info = {
             'id':user.id,
-            'username': user.username,
-            'email': user.email,
-            'phone_number': user.phone_number,
+            # 'username': user.username,
+            # 'email': user.email,
+            # 'phone_number': user.phone_number,
             # 'agency':user.agency,
             'role': user.role,
         }
