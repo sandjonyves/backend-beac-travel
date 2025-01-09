@@ -52,15 +52,40 @@ class MissionViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(missions, many=True)
         return Response(serializer.data)
 
+    # @action(detail=False, methods=['get'], url_path='user-request/(?P<service_id>\w+)')
+    # def user_requests(self, request, service_id):
+    #     missions = self.queryset.filter(
+    #         status='submitted',
+    #         user__agency__service__id=service_id
+    #     )
+    #     serializer = self.get_serializer(missions, many=True)
+    #     return Response(serializer.data)
+
     @action(detail=False, methods=['get'], url_path='user-request/(?P<service_id>\w+)')
     def user_requests(self, request, service_id):
-        missions = self.queryset.filter(
-            status='submitted',
-            user__agency__service__id=service_id
-        )
+        # Récupérer toutes les agences associées au service
+        agencies = Agency.objects.filter(service=service_id)
+
+        print(agencies)
+        
+        users = []
+        missions = []
+
+        # Récupérer tous les agents des agences et l'administrateur
+        for agency in agencies:
+            users.extend(agency.agents.all())  # Ajouter tous les agents
+            if agency.admin_user:  # Vérifier si l'administrateur existe avant d'ajouter
+                users.append(agency.admin_user)  # Ajouter l'administrateur
+
+        print(users)
+        
+        # Récupérer les missions avec le statut 'submitted' pour chaque utilisateur
+        for user in users:
+            missions.extend(user.missions.filter(status='submitted'))  # Filtrer par statut
+
+        # Sérialiser les missions
         serializer = self.get_serializer(missions, many=True)
         return Response(serializer.data)
-        
     @action(detail=True, methods=['put'], url_path='status-change/(?P<mission_status>\w+)')
     def status_change(self, request, pk=None, mission_status=None):
         mission = self.get_object()  
